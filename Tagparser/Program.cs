@@ -19,9 +19,6 @@ namespace Tagparser
         public string ContentAttributes;
     }
 
-
-
-
     class Program
     {
         static void Main(string[] args)
@@ -35,11 +32,29 @@ namespace Tagparser
             {
                 Regex reg = new Regex(@"(^[0-9.]+ The \w+ element\n\n)|(^[0-9.]+ The [\w, and]+ elements)");
                 return reg.IsMatch(w.TextContent);
-            }).Select(w => new TagData()
-            {
-                TagName = w.QuerySelector("h4").TextContent,
-                Categories = w.QuerySelector("dd").TextContent,
-            });
+            }).Select(w =>
+                {
+                    int i = -1;
+                    string[] param = new string[5];
+                    foreach (var item in w.Children[1].Children)
+                    {
+                        if (item.TagName == "DT") i++;
+                        if (i == 5) break;
+                        if(item.TagName=="DD")
+                        {
+                            param[i] += item.TextContent+'\n';
+                        }
+                    }
+                    return new TagData()
+                        {
+                            TagName = w.QuerySelector("h4").TextContent,
+                            Categories = param[0],
+                            ContentAttributes = param[1],
+                            ContentModel = param[2],
+                            ContextsUsed = param[3],
+                            TagOmissionInText = param[4]
+                        };
+                });
         }
     }
 }
