@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AngleSharp;
 using System.Text.RegularExpressions;
+using System.Reflection;
+
 
 namespace Tagparser
 {
@@ -18,23 +20,15 @@ namespace Tagparser
         }
 
 
-        public IEnumerable<T> Deserialize<T>(string html) 
-        {
-            
-
-
-
-
-            throw new Exception();
-        }
+        
     }
 
 
 
-    [Selector("table.propstable tr")]
+    [Selector("h4~dl")]
     class TagData
     {
-        [Selector("TagName")]
+        [Selector(" > section:nth-child(4) > section:nth-child(2)")]
         public string TagName;
 
         [Selector("Categories")]
@@ -59,13 +53,48 @@ namespace Tagparser
 
     class Program
     {
+
+        public static IEnumerable<T> Deserialize<T>(string html)
+        {
+
+
+
+
+            var attrib = ((Selector)(System.Attribute.GetCustomAttributes(typeof(T)).First())).DataType;
+            var tagName = typeof(T).GetField("TagName", BindingFlags.Public | BindingFlags.Instance);
+
+
+
+
+            throw new Exception();
+        }
+
+
         static void Main(string[] args)
         {
+
+
+
+            //var asd = Deserialize<TagData>("fdfdf");
+
+
+
+
+
+
+
             var config = new AngleSharp.Configuration().WithDefaultLoader();
             var address = "http://www.w3.org/TR/html51/semantics.html";
             var document = BrowsingContext.New(config).OpenAsync(Url.Create(address)).Result;
-            var cellSelector = "section";
-            var cells = document.QuerySelectorAll(cellSelector);
+            var cellSelector = "dl.element";
+            var cellSelector2 = "dl+h4";
+
+
+            var cells = document.QuerySelectorAll(cellSelector).Select(w=>w.TextContent);
+            var cells2 = document.QuerySelectorAll(cellSelector2).Select(w => w.TextContent);
+
+
+            /*
             var titles = cells.Select(m => m).Where(w =>
             {
                 Regex reg = new Regex(@"(^[0-9.]+ The \w+ element\n\n)|(^[0-9.]+ The [\w, and]+ elements)");
@@ -92,7 +121,7 @@ namespace Tagparser
                             ContextsUsed = param[3],
                             TagOmissionInText = param[4]
                         };
-                });
+                });*/
         }
     }
 }
