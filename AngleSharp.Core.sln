@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngleSharp.Core.Silverlight
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tagparser", "Tagparser\Tagparser.csproj", "{CD4CEF70-4436-4B0C-B3AE-B918766A0938}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagAnalyser", "TagAnalyser\TagAnalyser.csproj", "{0F5A78F7-751E-49B3-8511-8F15CFC68A63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{CD4CEF70-4436-4B0C-B3AE-B918766A0938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD4CEF70-4436-4B0C-B3AE-B918766A0938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD4CEF70-4436-4B0C-B3AE-B918766A0938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F5A78F7-751E-49B3-8511-8F15CFC68A63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F5A78F7-751E-49B3-8511-8F15CFC68A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F5A78F7-751E-49B3-8511-8F15CFC68A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5A78F7-751E-49B3-8511-8F15CFC68A63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
