@@ -7,10 +7,14 @@ using AngleSharp;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.IO;
+using System.Collections;
 
 
 namespace Tagparser
 {
+
+
+
 
     public class Selector : Attribute
     {
@@ -20,8 +24,6 @@ namespace Tagparser
             DataType = dataType;
         }
     }
-
-
 
     [Selector("body>section>section>section")]
     class TagData
@@ -42,24 +44,25 @@ namespace Tagparser
         public string TagOmissionInText;
 
         [Selector(" > dd")]
-        public string ContentAttributes;
+        public string ContentAttributes1;
     }
+
 
     [Flags]
     public enum Category
     {
         None = 0,
-        Metadata = 0x01,
-        Flow = 0x02,
-        Sectioning = 0x04,
-        Heading = 0x08,
-        Phrasing = 0x16,
-        Embedded = 0x32,
-        Interactive = 0x64,
-        Palpable = 0x128
+        Sectioning = 1 << 1,
+        Flow = 1 << 2,
+        Embedded = 1 << 3,
+        Heading = 1 << 4,
+        Interactiv = 1 << 5,
+        Metadata = 1 << 6,
+        Palpable = 1 << 7,
+        Phrasing = 1 << 8
     }
 
-    public enum GlobalAttributes
+    public enum GlobalAttributes1
     {
         Accesskey,
         Class,
@@ -83,124 +86,130 @@ namespace Tagparser
         Translate
     }
 
-    public enum Attributes
+
+    [Flags]
+    public enum Attributes1 : ulong
     {
         None = 0,
-        Abbr = 1,
-        Accept = 2,
-        AcceptCharset = 3,
-        Action = 4,
-        Allowfullscreen = 5,
-        Alt = 6,
-        Async = 7,
-        Autocomplete = 8,
-        Autofocus = 9,
-        Autoplay = 10,
-        Challenge = 11,
-        Charset = 12,
-        Checked = 13,
-        Cite = 14,
-        Cols = 15,
-        Colspan = 16,
-        Command = 17,
-        Content = 18,
-        Controls = 19,
-        Coords = 20,
-        Crossorigin = 21,
-        Data = 22,
-        Datetime = 23,
-        Default = 24,
-        Defer = 25,
-        Dirname = 26,
-        Disabled = 27,
-        Download = 28,
-        Enctype = 29,
-        For = 30,
-        Form = 31,
-        Formaction = 32,
-        Formenctype = 33,
-        Formmethod = 34,
-        Formnovalidate = 35,
-        Formtarget = 36,
-        Headers = 37,
-        Height = 38,
-        High = 39,
-        Href = 40,
-        Hreflang = 41,
-        HttpEquiv = 42,
-        Icon = 43,
-        Inputmode = 44,
-        Ismap = 45,
-        Keytype = 46,
-        Kind = 47,
-        Label = 48,
-        List = 49,
-        Loop = 50,
-        Low = 51,
-        Manifest = 52,
-        Max = 53,
-        Maxlength = 54,
-        Media,
-        Mediagroup,
-        Menu,
-        Method,
-        Min,
-        Minlength,
-        Multiple,
-        Muted,
-        Mame,
-        Novalidate,
-        Open,
-        Optimum,
-        Pattern,
-        Placeholder,
-        Poster,
-        Preload,
-        Radiogroup,
-        Readonly,
-        Rel,
-        Required,
-        Reversed,
-        Rows,
-        Rowspan,
-        Sandbox,
-        Scope,
-        Scoped,
-        Seamless,
-        Selected,
-        Shape,
-        Size,
-        Sizes,
-        Sortable,
-        Sorted,
-        Span,
-        Src,
-        Srcdoc,
-        Srclang,
-        Srcset,
-        Start,
-        Step,
-        Target,
-        Type,
-        Typemustmatch,
-        Usemap,
-        Value,
-        Width,
-        Wrap
+        Abbr = 1ul << 1,
+        Accept = 1ul << 2,
+        AcceptCharset = 1ul << 3,
+        Action = 1ul << 4,
+        Allowfullscreen = 1ul << 5,
+        Alt = 1ul << 6,
+        Async = 1ul << 7,
+        Autocomplete = 1ul << 8,
+        Autofocus = 1ul << 9,
+        Autoplay = 1ul << 10,
+        Challenge = 1ul << 11,
+        Charset = 1ul << 12,
+        Checked = 1ul << 13,
+        Cite = 1ul << 14,
+        Cols = 1ul << 15,
+        Colspan = 1ul << 16,
+        Command = 1ul << 17,
+        Content = 1ul << 18,
+        Controls = 1ul << 19,
+        Coords = 1ul << 20,
+        Crossorigin = 1ul << 21,
+        Data = 1ul << 22,
+        Datetime = 1ul << 23,
+        Default = 1ul << 24,
+        Defer = 1ul << 25,
+        Dirname = 1ul << 26,
+        Disabled = 1ul << 27,
+        Download = 1ul << 28,
+        Enctype = 1ul << 29,
+        For = 1ul << 30,
+        Form = 1ul << 31,
+        Formaction = 1ul << 32,
+        Formenctype = 1ul << 33,
+        Formmethod = 1ul << 34,
+        Formnovalidate = 1ul << 35,
+        Formtarget = 1ul << 36,
+        Headers = 1ul << 37,
+        Height = 1ul << 38,
+        High = 1ul << 39,
+        Href = 1ul << 40,
+        Hreflang = 1ul << 41,
+        HttpEquiv = 1ul << 42,
+        Icon = 1ul << 43,
+        Inputmode = 1ul << 44,
+        Ismap = 1ul << 45,
+        Keytype = 1ul << 46,
+        Kind = 1ul << 47,
+        Label = 1ul << 48,
+        List = 1ul << 49,
+        Loop = 1ul << 50,
+        Low = 1ul << 51,
+        Manifest = 1ul << 52,
+        Max = 1ul << 53,
+        Maxlength = 1ul << 54,
+        Media = 1ul << 55,
+        Mediagroup = 1ul << 56,
+        Menu = 1ul << 57,
+        Method = 1ul << 58,
+        Min = 1ul << 59
     }
+
+    [Flags]
+    public enum Attributes12 : ulong
+    {
+        None = 0,
+        Minlength = 1ul << 1,
+        Multiple = 1ul << 2,
+        Muted = 1ul << 3,
+        Mame = 1ul << 4,
+        Novalidate = 1ul << 5,
+        Open = 1ul << 6,
+        Optimum = 1ul << 7,
+        Pattern = 1ul << 8,
+        Placeholder = 1ul << 9,
+        Poster = 1ul << 10,
+        Preload = 1ul << 11,
+        Radiogroup = 1ul << 12,
+        Readonly = 1ul << 13,
+        Rel = 1ul << 14,
+        Required = 1ul << 15,
+        Reversed = 1ul << 16,
+        Rows = 1ul << 17,
+        Rowspan = 1ul << 18,
+        Sandbox = 1ul << 19,
+        Scope = 1ul << 20,
+        Scoped = 1ul << 21,
+        Seamless = 1ul << 22,
+        Selected = 1ul << 23,
+        Shape = 1ul << 24,
+        Size = 1ul << 25,
+        Sizes = 1ul << 26,
+        Sortable = 1ul << 27,
+        Sorted = 1ul << 28,
+        Span = 1ul << 29,
+        Src = 1ul << 30,
+        Srcdoc = 1ul << 31,
+        Srclang = 1ul << 32,
+        Srcset = 1ul << 33,
+        Start = 1ul << 34,
+        Step = 1ul << 35,
+        Target = 1ul << 36,
+        Type = 1ul << 37,
+        Typemustmatch = 1ul << 38,
+        Usemap = 1ul << 39,
+        Value = 1ul << 40,
+        Width = 1ul << 41,
+        Wrap = 1ul << 42
+    }
+
 
     public class Tag
     {
         public string TagName;
         public bool IsSingle;
         public Category Categories;
-        public Attributes Attributes;
+        public Attributes1 Attributes1;
+        public Attributes12 Attributes12;
+        public BitArray Attributes;
     }
-
-
-
-
-
 
 
     class Program
@@ -256,7 +265,7 @@ namespace Tagparser
                     continue;
                 }
 
-                string[] otherAttributes = new string[] { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
+                string[] otherAttributes1 = new string[] { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
 
                 int i = -1;
                 foreach (var item in cell.Children[1].Children)
@@ -264,13 +273,13 @@ namespace Tagparser
                     if (item.TagName == "DT") i++;
                     if (item.TagName == "DD")
                     {
-                        otherAttributes[i] += " | " + item.TextContent;
+                        otherAttributes1[i] += " | " + item.TextContent;
                     }
                     if (i == 5) break;
                 }
                 for (int j = 1; j <= 5; j++)
                 {
-                    typeof(T).GetField(fields[j].Name, BindingFlags.Public | BindingFlags.Instance).SetValue(a, otherAttributes[j - 1].Replace('\n', '.').Replace(',', '.').Replace("—", "-"));
+                    typeof(T).GetField(fields[j].Name, BindingFlags.Public | BindingFlags.Instance).SetValue(a, otherAttributes1[j - 1].Replace('\n', '.').Replace(',', '.').Replace("—", "-"));
                 }
 
                 Regex reg = new Regex(@"(^[0-9.]+ The \w+ element)|(^[0-9.]+ The [\w, and]+ elements)");
@@ -286,10 +295,8 @@ namespace Tagparser
         {
 
             var a = DeserializeTags<TagData>("http://www.w3.org/TR/html51/semantics.html");
-
             StreamWriter sr = new StreamWriter("D:\\TagData.csv");
-
-            sr.WriteLine("Tag Name,Categories,Context in which used,Content model,Tag omission,ContentAttributes");
+            sr.WriteLine("Tag Name,Categories,Context in which used,Content model,Tag omission,ContentAttributes1");
 
 
             foreach (var item in a)
@@ -300,7 +307,7 @@ namespace Tagparser
                     item.ContextsUsed + "," +
                     item.ContentModel + "," +
                     item.TagOmissionInText + "," +
-                    item.ContentAttributes);
+                    item.ContentAttributes1);
             }
 
             sr.Close();
@@ -329,7 +336,7 @@ namespace Tagparser
                         {
                             TagName = w.QuerySelector("h4").TextContent,
                             Categories = param[0],
-                            ContentAttributes = param[1],
+                            ContentAttributes1 = param[1],
                             ContentModel = param[2],
                             ContextsUsed = param[3],
                             TagOmissionInText = param[4]
